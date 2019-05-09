@@ -99,6 +99,11 @@ shadowJar{
 
 task buildRelease(dependsOn: shadowJar) {
   doLast {
+    // remove a few troublesome dependencies from the fat jar
+    exec { commandLine 'zip', '-d', 'build/libs/retrial.jar', 'org/codehaus/groovy/*' }
+    exec { commandLine 'zip', '-d', 'build/libs/retrial.jar', 'org/gradle/*' }
+    exec { commandLine 'zip', '-d', 'build/libs/retrial.jar', 'META-INF/services/org.codehaus.*' }
+    exec { commandLine 'zip', '-d', 'build/libs/retrial.jar', 'META-INF/services/org.gradle.*' }
     print "Release can be found at build/libs/retrial.jar"
   }
 }
