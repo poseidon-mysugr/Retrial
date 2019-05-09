@@ -36,6 +36,9 @@ class ProjectBasedLiveDependenciesRepository @Inject constructor(
   override fun get(): Single<Set<LiveDependency>> = Observable
       .fromIterable(project.configurations)
       .filter { it.isCanBeResolved }
+      // This is a workaround for what seems to be a bug in Kotlin:
+      // https://youtrack.jetbrains.com/issue/KT-28875
+      .filter { !it.name.toLowerCase().endsWith("implementationdependenciesmetadata") }
       .map(::getDependenciesInConfiguration)
       .collectInto(HashSet<LiveDependency>()) { set, dependencies -> set.addAll(dependencies) }
       .map { it as Set<LiveDependency> }
