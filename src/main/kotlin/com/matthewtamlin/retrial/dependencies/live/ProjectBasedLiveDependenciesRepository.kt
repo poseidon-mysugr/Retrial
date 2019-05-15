@@ -39,6 +39,7 @@ class ProjectBasedLiveDependenciesRepository @Inject constructor(
       // This is a workaround for what seems to be a bug in Kotlin:
       // https://youtrack.jetbrains.com/issue/KT-28875
       .filter { !it.name.toLowerCase().endsWith("implementationdependenciesmetadata") }
+      .filter { !it.name.toLowerCase().endsWith("apidependenciesmetadata") }
       .filter { !it.name.equals("archives") }
       .map(::getDependenciesInConfiguration)
       .collectInto(HashSet<LiveDependency>()) { set, dependencies -> set.addAll(dependencies) }
